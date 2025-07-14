@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artikel | Arumi Invitation</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="container">
+    <h1 class="logo">Arumi <span>Invitation</span></h1>
+  </header>
+
+  <section class="blog-article container">
+    <h2 id="title"></h2>
+    <p class="tanggal" id="date"></p>
+    <div id="content"></div>
+  </section>
+
+  <footer class="container">
+    <p>&copy; 2025 Arumi Invitation</p>
+  </footer>
+
+  <script>
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  fetch('posts.json')
+    .then(res => res.json())
+    .then(data => {
+      const post = data.find(p => p.id === id);
+      if (post) {
+        document.title = post.title + " | Arumi Invitation";
+        document.getElementById('title').textContent = post.title;
+        document.getElementById('content').innerHTML = post.content;
+      } else {
+        document.getElementById('title').textContent = "Artikel tidak ditemukan";
+        document.getElementById('content').innerHTML = "<p>Maaf, artikel yang Anda cari tidak tersedia atau belum dipublikasikan.</p>";
+      }
+    })
+    .catch(error => {
+      document.getElementById('title').textContent = "Gagal Memuat Artikel";
+      document.getElementById('content').innerHTML = "<p>Terjadi kesalahan saat mengambil data artikel.</p>";
+      console.error("Fetch error:", error);
+    });
+</script>
+
+</body>
+</html>
